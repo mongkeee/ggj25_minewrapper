@@ -99,7 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objSpr: {fileID: 0}
-  bom: {fileID: 21300000, guid: b15b081c5fb27044eb2406241d27bbdb, type: 3}
+  bomb:
+  - {fileID: 21300000, guid: b15b081c5fb27044eb2406241d27bbdb, type: 3}
+  - {fileID: 21300000, guid: 223fe0907023b054e90538b5390f0d3b, type: 3}
+  flagBubble:
+  - {fileID: 21300000, guid: 8d14c26d5828f54429ee58089fb2f5eb, type: 3}
+  - {fileID: 21300000, guid: 153f94a8d82be8d4b854487238b1c1a1, type: 3}
   blankNum:
   - {fileID: 21300000, guid: 2f5159b326f197c4d9781e32fa035124, type: 3}
   - {fileID: -648385162, guid: ef071241b5418b746b0e66ec55c71bde, type: 3}
@@ -108,7 +113,17 @@ MonoBehaviour:
   - {fileID: 1497564436, guid: ef071241b5418b746b0e66ec55c71bde, type: 3}
   - {fileID: -941958848, guid: ef071241b5418b746b0e66ec55c71bde, type: 3}
   - {fileID: -805489297, guid: ef071241b5418b746b0e66ec55c71bde, type: 3}
+  bubbles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  lane: 0
   isBomb: 0
+  unpop: 1
+  flagged: 0
   bombNear: 0
 --- !u!58 &4860822112516080948
 CircleCollider2D:
@@ -126,7 +141,7 @@ CircleCollider2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 1
   m_ForceSendLayers:
     serializedVersion: 2
     m_Bits: 4294967295

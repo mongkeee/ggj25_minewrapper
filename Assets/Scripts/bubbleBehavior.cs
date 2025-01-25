@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class bubbleBehavior : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer objSpr;
-    [SerializeField] private Sprite bom;
+    [SerializeField] private Sprite[] bomb;
+    [SerializeField] private Sprite[] flagBubble;
     [SerializeField] private Sprite[] blankNum;
+    [SerializeField] private GameObject[] bubbles = new GameObject[6];
+    [SerializeField] private int lane;
     public bool isBomb = false;
     public bool unpop = true;
     public bool flagged = false;
@@ -19,45 +23,48 @@ public class bubbleBehavior : MonoBehaviour
     void Start()
     {
         objSpr = this.GetComponent<SpriteRenderer>();
+        lane = this.transform.parent.gameObject.GetComponent<spawnerBehavior>().laneNum;
 
         int rng = Random.Range(0, 10);
-        if(rng >= 7) //rng bom
-        {
-            isBomb = true;
-        }
+        if(lane <= 1) isBomb = false; //for the first 2 lane
+        else if(rng >= 8) isBomb = true; //rng bomb
 
         for (int i = 0; i < 6; i++)
         {
             radOth[i] = i * 60 * Mathf.Deg2Rad;
-            Debug.Log(radOth[i]);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!unpop)
+        if (!unpop) //if bubble popped by player
         {
-            if (isBomb) objSpr.sprite = bom;
+            if (isBomb) objSpr.sprite = bomb[0]; //player lose func
             else objSpr.sprite = blankNum[bombNear];
+
+            if(bombNear == 0)
+            {
+                StartCoroutine(PoppedOther());
+            }
         }
         else
         {
+            if (flagged) objSpr.sprite = flagBubble[1];
+            else objSpr.sprite = flagBubble[0];
             int jum = 0;
             RaycastHit2D[] hitOth = new RaycastHit2D[6];
             for (int i = 0; i < 6; i++)
             {
                 hitOth[i] = Physics2D.Raycast(this.transform.position + RadToCoord(radOth[i]), RadToCoord(radOth[i]), 0.5f);
-                Debug.DrawRay(this.transform.position + RadToCoord(radOth[i]), RadToCoord(radOth[i]) * 0.5f, Color.white, 0);
+                Debug.DrawRay(this.transform.position + RadToCoord(radOth[i]), RadToCoord(radOth[i]) * 0.5f, Color.white, 0); //only show up with gizmos on
                 if (hitOth[i].collider != null)
                 {
                     if(hitOth[i].collider.gameObject.tag == "pop")
                     {
                         bubbleBehavior othBubb = hitOth[i].collider.gameObject.GetComponent<bubbleBehavior>();
-                        if (othBubb.isBomb)
-                        {
-                            jum++;
-                        }
+                        bubbles[i] = hitOth[i].collider.gameObject;
+                        if (othBubb.isBomb) jum++;
                     }
                 }
             }
@@ -67,16 +74,65 @@ public class bubbleBehavior : MonoBehaviour
 
     public void OnMouseOver()//mouse input
     {
-        if (Input.GetMouseButtonDown(0)) 
+        //beranak anak
+        if (!IsMouseOverUI())
         {
-            unpop = false;
+            if (Input.GetMouseButtonDown(0)) //klik kiri
+            {
+                if (!flagged)
+                {
+                    if (countFlagged() == bombNear && !unpop)
+                    {
+                        for (int i = 0; i < bubbles.Length; i++)
+                        {
+                            if (bubbles[i] != null && !bubbles[i].GetComponent<bubbleBehavior>().flagged) bubbles[i].GetComponent<bubbleBehavior>().unpop = false;
+                        }
+                    }
+                    else unpop = false;
+                }
+            }
+            else if (Input.GetMouseButtonDown(1)) //klik kanan
+            {
+                if (!flagged) flagged = true;
+                else flagged = false;
+            }
+        }
+
+        
+    }
+
+    private Vector3 RadToCoord(float rad) //radians ke koordinat di lingkaran
+    {
+        Vector3 coord = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0) * 0.7f; //radius lingkaran 0.7
+
+        return coord;
+    }
+
+    private IEnumerator PoppedOther()
+    {
+        yield return new WaitForSeconds(0.3f);
+        //capek
+        for (int i = 0;i < bubbles.Length; i++)
+        {
+            if(bubbles[i] != null) bubbles[i].GetComponent<bubbleBehavior>().unpop = false;
         }
     }
 
-    private Vector3 RadToCoord(float rad)
+    private int countFlagged()
     {
-        Vector3 coord = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0) * 0.7f;
+        int flagged = 0;
+        for (int i = 0; i < bubbles.Length; i++)
+        {
+            if (bubbles[i] != null)
+            {
+                if (bubbles[i].GetComponent<bubbleBehavior>().flagged) flagged++;
+            }
+        }
+        return flagged;
+    }
 
-        return coord;
+    private bool IsMouseOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 }
