@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class gameEngine : MonoBehaviour
 {
+    [SerializeField] public Animator canva;
     [SerializeField] private GameObject cam;
     [SerializeField] private spawnerBehavior bubLane;
     [SerializeField] private int laneRn = 0;
     [SerializeField] private int futureLane;
     [SerializeField] private List<int> laneFinished;
 
+    public bool openAllBomb = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        //cam = GameObject.Find("cam").GetComponent<GameObject>();
-
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 30; i++) //spawn bubbles' lane
         {
             spawnerBehavior ln = Instantiate(bubLane, new Vector3( i%2 == 0 ? -7.5f : -8.25f,i* 1.4f, 0), Quaternion.identity);
             ln.laneNum = i;
@@ -31,10 +32,9 @@ public class gameEngine : MonoBehaviour
 
     public void LaneDone(int lane)
     {
-        //rough test
         if(lane > laneRn) // if lane finished isn't the current one / newer one
         {
-            //laneFinished.Add(lane);
+            return;
         }
         else if (lane == laneRn)
         {
@@ -45,8 +45,15 @@ public class gameEngine : MonoBehaviour
         }
     }
 
-    public void Lose()
+    public void LoseByBomb()
     {
+        canva.SetInteger("gameState", 2);
+        openAllBomb = true;
+        //add some UI shenanigans, show score or something
+    }
 
+    public void StartGame()
+    {
+        canva.SetInteger("gameState", 1);
     }
 }

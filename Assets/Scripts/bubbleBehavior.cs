@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class bubbleBehavior : MonoBehaviour
 {
+    [SerializeField] private gameEngine ge;
     [SerializeField] private SpriteRenderer objSpr;
     [SerializeField] private Sprite[] bomb;
     [SerializeField] private Sprite[] flagBubble;
@@ -22,6 +23,7 @@ public class bubbleBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ge = GameObject.Find("LevelConfig").GetComponent<gameEngine>();
         objSpr = this.GetComponent<SpriteRenderer>();
         lane = this.transform.parent.gameObject.GetComponent<spawnerBehavior>().laneNum;
 
@@ -38,15 +40,17 @@ public class bubbleBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!unpop) //if bubble popped by player
+        if(ge.openAllBomb && isBomb) objSpr.sprite = bomb[0]; //if other bomb revealed by player
+        else if (!unpop) //if bubble popped by player
         {
-            if (isBomb) objSpr.sprite = bomb[0]; //player lose func
-            else objSpr.sprite = blankNum[bombNear];
-
-            if(bombNear == 0)
+            if (isBomb) //player lose func
             {
-                StartCoroutine(PoppedOther());
+                objSpr.sprite = bomb[1];
+                ge.LoseByBomb();
             }
+            else objSpr.sprite = blankNum[bombNear];
+            if(bombNear == 0) StartCoroutine(PoppedOther());
+            if(lane == 0) ge.StartGame();
         }
         else
         {
@@ -110,7 +114,7 @@ public class bubbleBehavior : MonoBehaviour
 
     private IEnumerator PoppedOther()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.3f); //delay between automatic bubble pop
         //capek
         for (int i = 0;i < bubbles.Length; i++)
         {
