@@ -52,6 +52,11 @@ public class gameEngine : MonoBehaviour
         //add some UI shenanigans, show score or something
     }
 
+    public void LoseByFalseFlagged()
+    {
+        Time.timeScale = 0;
+    }
+
     public void StartGame()
     {
         canva.SetInteger("gameState", 1);
