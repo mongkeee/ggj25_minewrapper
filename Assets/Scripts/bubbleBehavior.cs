@@ -11,7 +11,10 @@ public class bubbleBehavior : MonoBehaviour
     [SerializeField] private Sprite[] flagBubble;
     [SerializeField] private Sprite[] blankNum;
     [SerializeField] private GameObject[] bubbles = new GameObject[6];
-    [SerializeField] private int lane;
+    [SerializeField] private AudioClip[] pop;
+    [SerializeField] private AudioClip duar;
+    [SerializeField] private AudioSource aud;
+    public int lane;
     public bool isBomb = false;
     public bool unpop = true;
     public bool flagged = false;
@@ -23,6 +26,7 @@ public class bubbleBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        aud = this.GetComponent<AudioSource>();
         ge = GameObject.Find("LevelConfig").GetComponent<gameEngine>();
         objSpr = this.GetComponent<SpriteRenderer>();
         lane = this.transform.parent.gameObject.GetComponent<spawnerBehavior>().laneNum;
@@ -40,7 +44,12 @@ public class bubbleBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ge.openAllBomb && isBomb) objSpr.sprite = bomb[0]; //if other bomb revealed by player
+        if (ge.openAllBomb && isBomb) //if other bomb revealed by player
+        {
+            objSpr.sprite = bomb[0];
+            if (unpop) playBomb();
+            unpop = false;
+        }
         else if (!unpop) //if bubble popped by player
         {
             if (isBomb) //player lose func
@@ -49,8 +58,9 @@ public class bubbleBehavior : MonoBehaviour
                 ge.LoseByBomb();
             }
             else objSpr.sprite = blankNum[bombNear];
-            if(bombNear == 0) StartCoroutine(PoppedOther());
-            if(lane == 0) ge.StartGame();
+
+            if (bombNear == 0) StartCoroutine(PoppedOther());
+            if (lane == 0 && !ge.lose) ge.StartGame();
         }
         else
         {
@@ -64,7 +74,7 @@ public class bubbleBehavior : MonoBehaviour
                 Debug.DrawRay(this.transform.position + RadToCoord(radOth[i]), RadToCoord(radOth[i]) * 0.5f, Color.white, 0); //only show up with gizmos on
                 if (hitOth[i].collider != null)
                 {
-                    if(hitOth[i].collider.gameObject.tag == "pop")
+                    if (hitOth[i].collider.gameObject.tag == "pop")
                     {
                         bubbleBehavior othBubb = hitOth[i].collider.gameObject.GetComponent<bubbleBehavior>();
                         bubbles[i] = hitOth[i].collider.gameObject;
@@ -89,10 +99,19 @@ public class bubbleBehavior : MonoBehaviour
                     {
                         for (int i = 0; i < bubbles.Length; i++)
                         {
-                            if (bubbles[i] != null && !bubbles[i].GetComponent<bubbleBehavior>().flagged) bubbles[i].GetComponent<bubbleBehavior>().unpop = false;
+                            if (bubbles[i] != null && !bubbles[i].GetComponent<bubbleBehavior>().flagged)
+                            {
+                                if (bubbles[i].GetComponent<bubbleBehavior>().unpop) playPop();
+                                bubbles[i].GetComponent<bubbleBehavior>().unpop = false;
+                            }
                         }
                     }
-                    else unpop = false;
+                    else 
+                    {
+                        if(unpop) playPop();
+                        unpop = false;                        
+                    }
+                    
                 }
             }
             else if (Input.GetMouseButtonDown(1)) //klik kanan
@@ -118,7 +137,11 @@ public class bubbleBehavior : MonoBehaviour
         //capek
         for (int i = 0;i < bubbles.Length; i++)
         {
-            if(bubbles[i] != null) bubbles[i].GetComponent<bubbleBehavior>().unpop = false;
+            if (bubbles[i] != null && bubbles[i].GetComponent<bubbleBehavior>().unpop)
+            {
+                bubbles[i].GetComponent<bubbleBehavior>().unpop = false;
+                playPop();
+            }
         }
     }
 
@@ -138,5 +161,21 @@ public class bubbleBehavior : MonoBehaviour
     private bool IsMouseOverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
+    }
+
+    private void playPop()
+    {
+        int rng = Random.Range(0, pop.Length);
+        aud.PlayOneShot(pop[rng]);
+    }
+
+    private void playBomb()
+    {
+        aud.PlayOneShot(duar);
+    }
+
+    public void falseFlagged()
+    {
+        flagBubble[1] = flagBubble[2];
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 353619678114864719}
   - component: {fileID: 2083911931682560986}
   - component: {fileID: 4860822112516080948}
+  - component: {fileID: 5973781831448966158}
   m_Layer: 0
   m_Name: bubble
   m_TagString: pop
@@ -98,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc82492f0d50929489d4c24bc5e4e2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ge: {fileID: 0}
   objSpr: {fileID: 0}
   bomb:
   - {fileID: 21300000, guid: b15b081c5fb27044eb2406241d27bbdb, type: 3}
@@ -105,6 +107,7 @@ MonoBehaviour:
   flagBubble:
   - {fileID: 21300000, guid: 8d14c26d5828f54429ee58089fb2f5eb, type: 3}
   - {fileID: 21300000, guid: 153f94a8d82be8d4b854487238b1c1a1, type: 3}
+  - {fileID: 21300000, guid: f6f5a4dbe85998b4083b212822332810, type: 3}
   blankNum:
   - {fileID: 21300000, guid: 2f5159b326f197c4d9781e32fa035124, type: 3}
   - {fileID: -648385162, guid: ef071241b5418b746b0e66ec55c71bde, type: 3}
@@ -120,6 +123,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  pop:
+  - {fileID: 8300000, guid: fb3f5068cc3deeb48aecdfccc9cc3f47, type: 3}
+  - {fileID: 8300000, guid: cc9766be95f46844eb0aad2590b35d42, type: 3}
+  - {fileID: 8300000, guid: 9e2050c7bc32bfa4892d2721bf20bd2b, type: 3}
+  - {fileID: 8300000, guid: 5620aae78bdca9b4cbee6576f6881a00, type: 3}
+  - {fileID: 8300000, guid: 787a5b8acfe291646ae0b9ebd6167fed, type: 3}
+  - {fileID: 8300000, guid: decb276eea7a7cb498504da281bb64ac, type: 3}
+  - {fileID: 8300000, guid: 27dee0cf08a8836409976479a4152084, type: 3}
+  - {fileID: 8300000, guid: ef64b7aecfdca2e4bbd824c3d235b65e, type: 3}
+  - {fileID: 8300000, guid: efa980d6219255b48bf97f22ecca9e51, type: 3}
+  duar: {fileID: 8300000, guid: ee98fc1e83b57264eb652e7534f3f989, type: 3}
+  aud: {fileID: 0}
   lane: 0
   isBomb: 0
   unpop: 1
@@ -160,3 +175,99 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.6
+--- !u!82 &5973781831448966158
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3286019529833898458}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

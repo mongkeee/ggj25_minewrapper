@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class gameEngine : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI txScore;
     [SerializeField] public Animator canva;
     [SerializeField] private GameObject cam;
     [SerializeField] private spawnerBehavior bubLane;
-    [SerializeField] private int laneRn = 0;
     [SerializeField] private int futureLane;
-    [SerializeField] private List<int> laneFinished;
+    public bool lose = false;
+    private int falseLane = 0;
 
+    public int laneRn = 0;
     public bool openAllBomb = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1.0f;
         for (int i = 0; i < 30; i++) //spawn bubbles' lane
         {
             spawnerBehavior ln = Instantiate(bubLane, new Vector3( i%2 == 0 ? -7.5f : -8.25f,i* 1.4f, 0), Quaternion.identity);
@@ -27,7 +31,12 @@ public class gameEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        cam.transform.position = new Vector3( 0, Mathf.Lerp(cam.transform.position.y, laneRn * 1.4f, 0.05f), 0);
+        if (lose) cam.transform.position = new Vector3(0, Mathf.Lerp(cam.transform.position.y, falseLane * 1.4f, 0.05f), 0); 
+        else
+        {
+            txScore.text = "length " + laneRn.ToString() + " cm";
+            cam.transform.position = new Vector3(0, Mathf.Lerp(cam.transform.position.y, laneRn * 1.4f, 0.05f), 0);
+        }
     }
 
     public void LaneDone(int lane)
@@ -52,9 +61,11 @@ public class gameEngine : MonoBehaviour
         //add some UI shenanigans, show score or something
     }
 
-    public void LoseByFalseFlagged()
+    public void LoseByFalseFlagged(int lane)
     {
-        Time.timeScale = 0;
+        canva.SetInteger("gameState", 2);
+        lose = true;
+        falseLane = lane;
     }
 
     public void StartGame()

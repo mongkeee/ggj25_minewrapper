@@ -44,5 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e63faf053317b4992fca7257d88f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ge: {fileID: 0}
   bubble: {fileID: 3286019529833898458, guid: a64dc89a19d82524291631b36d4708a9, type: 3}
+  blank:
+  - {fileID: 564174116235779138, guid: 5ff251e1feb8d494d9c74bc503cddbfa, type: 3}
+  - {fileID: 8654740185283714264, guid: 092292047608d094589d5f7a9e7e0804, type: 3}
+  bubbleHolder: []
   laneNum: 0
