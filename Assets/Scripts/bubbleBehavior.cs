@@ -12,7 +12,6 @@ public class bubbleBehavior : MonoBehaviour
     [SerializeField] private Sprite[] blankNum;
     [SerializeField] private GameObject[] bubbles = new GameObject[6];
     [SerializeField] private AudioClip[] pop;
-    [SerializeField] private AudioClip duar;
     [SerializeField] private AudioSource aud;
     public int lane;
     public bool isBomb = false;
@@ -47,7 +46,6 @@ public class bubbleBehavior : MonoBehaviour
         if (ge.openAllBomb && isBomb) //if other bomb revealed by player
         {
             objSpr.sprite = bomb[0];
-            if (unpop) playBomb();
             unpop = false;
         }
         else if (!unpop) //if bubble popped by player
@@ -167,11 +165,6 @@ public class bubbleBehavior : MonoBehaviour
     {
         int rng = Random.Range(0, pop.Length);
         aud.PlayOneShot(pop[rng]);
-    }
-
-    private void playBomb()
-    {
-        aud.PlayOneShot(duar);
     }
 
     public void falseFlagged()

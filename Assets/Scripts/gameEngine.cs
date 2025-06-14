@@ -10,6 +10,8 @@ public class gameEngine : MonoBehaviour
     [SerializeField] private GameObject cam;
     [SerializeField] private spawnerBehavior bubLane;
     [SerializeField] private int futureLane;
+    [SerializeField] private AudioClip duar;
+    [SerializeField] private AudioSource aud;
     public bool lose = false;
     private int falseLane = 0;
 
@@ -31,6 +33,8 @@ public class gameEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = new Vector3(0, cam.transform.position.y, 0);
+
         if (lose) cam.transform.position = new Vector3(0, Mathf.Lerp(cam.transform.position.y, falseLane * 1.4f, 0.05f), 0); 
         else
         {
@@ -56,6 +60,7 @@ public class gameEngine : MonoBehaviour
 
     public void LoseByBomb()
     {
+        aud.PlayOneShot(duar);
         canva.SetInteger("gameState", 2);
         openAllBomb = true;
         //add some UI shenanigans, show score or something
